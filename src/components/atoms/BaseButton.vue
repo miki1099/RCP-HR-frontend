@@ -21,7 +21,7 @@ button {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
-  color: #ef3dff;
+  color: #00fb15;
   font-size: 16px;
   text-decoration: none;
   text-transform: uppercase;
@@ -31,21 +31,21 @@ button {
   letter-spacing: 4px;
 }
 .type2 {
-  color: #03e9f4;
+  color: #c40000;
 }
 button {
   border: none;
   background: none;
 }
 button:hover {
-  background: #03e9f4;
-  box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
+  background: #c40000;
+  box-shadow: 0 0 5px #c40000, 0 0 25px #c40000, 0 0 50px #c40000;
 }
 
 .type2:hover {
-  background: #ef3dff;
+  background: #00fb15;
   border-radius: 5px;
-  box-shadow: 0 0 5px #ef3dff, 0 0 25px #ef3dff, 0 0 50px #ef3dff;
+  box-shadow: 0 0 5px #00fb15, 0 0 25px #00fb15, 0 0 50px #00fb15;
 }
 
 @media (max-width: 600px) {

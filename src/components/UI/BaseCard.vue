@@ -35,15 +35,6 @@
     background-color: #2f2f2f;
   }
   
-  .question {
-    border-radius: 20px;
-    box-shadow: 0 2px 8px #2f2f2f;
-    padding: 1rem;
-    margin: 2rem auto;
-    max-width: 80%;
-    background-color: #2f2f2f;
-  }
-  
   @media (max-width: 600px) {
     .card,
     .dark {

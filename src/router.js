@@ -1,14 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import LogWork from './components/LogWork.vue'
 import UserAuth from './pages/auth/UserAuth.vue'
 import NotFound from './pages/notFoundd/NotFound.vue'
+import LogCustomWork from './pages/workLog/CustomWorkLog.vue'
 import store from './main.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', redirect: '/registerWork'},
-    { path: '/registerWork', component: HelloWorld, meta: { requiresAuth: true } },
+    { path: '/registerWork', component: LogWork, meta: { requiresAuth: true } },
+    { path: '/registerCustomWork', component: LogCustomWork, meta: { requiresAuth: true } },
     { path: '/login', component: UserAuth, meta: { requiresUnauth: true } },
     { path: '/:notFound(.*)', component: NotFound }
   ]

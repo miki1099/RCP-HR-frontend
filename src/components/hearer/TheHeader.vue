@@ -2,11 +2,11 @@
   <header>
     <the-burger id="side-menu"></the-burger>
     <div id="user-side">
-      <div id="welcome-user" v-if="!!userLogin" @click="goToUserDetails">
-        Witaj {{ userLogin }}!
+      <div id="welcome-user" v-if="!!userLogin">
+        Welcome {{ userLogin }}!
       </div>
       <base-button mode="type2" @click="loginLogout">{{
-        !!!userLogin ? 'Zaloguj' : 'Wyloguj'
+        !!!userLogin ? 'Log in' : 'Log out'
       }}</base-button>
     </div>
   </header>
@@ -69,7 +69,6 @@ header {
   text-align: center;
   display: inline-block;
   margin: 0 5%;
-  cursor: pointer;
 }
 
 .sign-up {
