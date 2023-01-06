@@ -4,82 +4,95 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <the-header/>
+    <side-bar>
+      
+    </side-bar>
+    <base-card>
+      <router-view></router-view>
+    </base-card>
+  </template>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script>
+import BaseCard from './components/UI/BaseCard.vue'
+import SideBar from "./components/menu/SideBar.vue";
+import TheHeader from './components/hearer/TheHeader.vue'
+export default {
+  name: 'App',
+  components: {
+    BaseCard,
+    SideBar,
+    TheHeader
+  },
+  created() {
+    this.$store.dispatch('tryLogIn');
+  }
 }
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+html {
+  background-color: #303133;
+  font-size: 20px;
 }
-
-nav {
-  width: 100%;
-  font-size: 12px;
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 40px;
+  font-family: "Open Sans";
+  color: #E9E9E9;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+div.sidebar-panel-nav {
+  display: flex;
+  flex-direction: column;
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+div.sidebar-panel-nav > div > a {
+  color: #E9E9E9;
+  text-decoration: none;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2em;
+  width: 100%;
+  align-items: center;
 }
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+div.sidebar-panel-nav > div > a:not(#home) {
+  flex-direction: row;
 }
-
-nav a:first-of-type {
-  border: 0;
+div.sidebar-panel-nav > div > a > svg{
+  margin-right: 15px;
 }
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+#home svg {
+  margin-bottom: 30px;
 }
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(73, 73, 73); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+@media (max-width: 600px){
+        .sidebar-panel-nav {
+          display: flex;
+        }
+        div.sidebar-panel-nav > div > a:not(#home) > svg{
+          width: 30px;
+          height: 30px;
+        }
+        html {
+          font-size: 15px;
+        }
+    }
 </style>
