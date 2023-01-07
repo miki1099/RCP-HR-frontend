@@ -44,6 +44,12 @@ export default {
   methods: {
     async submitMethod() {
       this.isLoading = true;
+      if(this.from >= this.to) {
+        this.error = 'Date from should be before to.'
+        this.isLoading = false;
+        return
+      }
+
       const login = this.$store.getters.getLogin
 
       let headers = new Headers();
