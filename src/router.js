@@ -5,6 +5,7 @@ import NotFound from './pages/notFoundd/NotFound.vue'
 import LogCustomWork from './pages/workLog/CustomWorkLog.vue'
 import Calendar from './pages/calendar/Calendar.vue'
 import DaysOff from './pages/daysOff/DaysOff.vue'
+import UserDocuments from './pages/user/UserDocuments.vue'
 import store from './main.js'
 
 const router = createRouter({
@@ -15,6 +16,7 @@ const router = createRouter({
     { path: '/registerCustomWork', component: LogCustomWork, meta: { requiresAuth: true } },
     { path: '/calendar', component: Calendar, meta: { requiresAuth: true } },
     { path: '/addDaysOff', component: DaysOff, meta: { requiresAuth: true } },
+    { path: '/userDocuments', component: UserDocuments, meta: { requiresAuth: true } },
     { path: '/login', component: UserAuth, meta: { requiresUnauth: true } },
     { path: '/:notFound(.*)', component: NotFound }
   ]
