@@ -59,7 +59,7 @@ export default {
       this.isAlreadyStarted();
       this.getWorklogs();
     } catch(exception) {
-      this.error = ex.message;
+      this.error = exception.message;
     }
   },
   methods: {
