@@ -57,13 +57,18 @@ export default {
 
             const responseData = await response.json();
 
+            let rolesBuf = []
+            for(let role of responseData.roles) {
+                rolesBuf.push(role.name)
+            }
+
             localStorage.setItem('login', responseData.username);
-            localStorage.setItem('roles', responseData.roles);
+            localStorage.setItem('roles', rolesBuf);
             localStorage.setItem('name', responseData.firstName);
 
             context.commit('setUser', {
                 login: responseData.username,
-                roles: responseData.roles,
+                roles: rolesBuf,
                 name: responseData.firstName,
             });
         },
@@ -89,19 +94,16 @@ export default {
         },
         isHr: state => {
             let roleList = state.roles;
-            for (var i = 0; i < roleList.length; i++) {
-                if (roleList[i].name == 'HR') {
-                    return true;
-                }
+            if(roleList.includes('HR')) {
+                return true
             }
             return false;
         },
         isManager: state => {
             let roleList = state.roles;
-            for (var i = 0; i < roleList.length; i++) {
-                if (roleList[i].name == 'MANAGER') {
-                    return true;
-                }
+            console.log(roleList)
+            if(roleList.includes('MANAGER')) {
+                return true
             }
             return false;
         },

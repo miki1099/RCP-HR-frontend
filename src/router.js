@@ -7,6 +7,8 @@ import Calendar from './pages/calendar/Calendar.vue'
 import DaysOff from './pages/daysOff/DaysOff.vue'
 import UserDocuments from './pages/user/UserDocuments.vue'
 import Info from './pages/info/Info.vue'
+import HrMain from './pages/hr/HrMain.vue'
+import ManagerMain from './pages/manager/ManagerMain.vue'
 import store from './main.js'
 
 const router = createRouter({
@@ -20,12 +22,17 @@ const router = createRouter({
     { path: '/info', component: Info, meta: { requiresAuth: true } },
     { path: '/userDocuments', component: UserDocuments, meta: { requiresAuth: true } },
     { path: '/login', component: UserAuth, meta: { requiresUnauth: true } },
+    { path: '/hrHome', component: HrMain, meta: { requiresHrRole: true } },
+    { path: '/managerHome', component: ManagerMain, meta: { requiresManagerRole: true } },
     { path: '/:notFound(.*)', component: NotFound }
   ]
 })
 
 router.beforeEach(function (to, _, next) {
-  if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+  const requiresAuthAndNotLogged = to.meta.requiresAuth && !store.getters.isAuthenticated
+  const requiresHrAndNotHave = to.meta.requiresHrRole && !store.getters.isHr
+  const requiresManagerRoleAndNothave = to.meta.requiresManagerRole && !store.getters.isManager
+  if (requiresAuthAndNotLogged || requiresHrAndNotHave || requiresManagerRoleAndNothave) {
       next('/login');
   } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
       next('/registerWork');
