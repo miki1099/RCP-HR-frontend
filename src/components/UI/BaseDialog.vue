@@ -114,6 +114,7 @@
   
   .white {
     color: rgb(255, 255, 255);
+    white-space: pre-line;
   }
   
   .dialog-enter-to,

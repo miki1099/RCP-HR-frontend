@@ -8,6 +8,7 @@ import DaysOff from './pages/daysOff/DaysOff.vue'
 import UserDocuments from './pages/user/UserDocuments.vue'
 import Info from './pages/info/Info.vue'
 import HrMain from './pages/hr/HrMain.vue'
+import AddUser from './pages/hr/views/AddUser.vue'
 import ManagerMain from './pages/manager/ManagerMain.vue'
 import store from './main.js'
 
@@ -23,6 +24,7 @@ const router = createRouter({
     { path: '/userDocuments', component: UserDocuments, meta: { requiresAuth: true } },
     { path: '/login', component: UserAuth, meta: { requiresUnauth: true } },
     { path: '/hrHome', component: HrMain, meta: { requiresHrRole: true } },
+    { path: '/hrHome/addUser', component: AddUser, meta: { requiresHrRole: true } },
     { path: '/managerHome', component: ManagerMain, meta: { requiresManagerRole: true } },
     { path: '/:notFound(.*)', component: NotFound }
   ]
