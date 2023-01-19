@@ -42,6 +42,34 @@
                                 <th>Hire day: </th>
                                 <th align="left">{{new Date(userInfo.hireDate).toLocaleDateString('en-GB') }}</th>
                             </tr>
+                            <tr>
+                                <th>change password: </th>
+                                <th>
+                                    <table>
+                                        <tr>
+                                            <th style="width:5px" >
+                                                <input  type="password"
+                                                v-model="oldPassword"
+                                                name=""
+                                                required=""
+                                                :class="{ invalid: !isOldValid, valid: isOldValid }"
+                                                placeholder="old password"></th>
+                                            <th><input type="password"
+                                                name=""
+                                                v-model="newPassword"
+                                                required=""
+                                                :class="{ invalid: !isNewValid, valid: isNewValid }"
+                                                placeholder="new password"></th>
+                                            <th><input type="password"
+                                                v-model="confirmPassword"
+                                                name=""
+                                                :class="{ invalid: !isNewValid, valid: isNewValid }"
+                                                required="" placeholder="confirm new password"></th>
+                                            <th><base-button @click="changePassword">change</base-button></th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
                         </table>
                 </base-card>
             </label>
@@ -120,7 +148,12 @@ export default {
     name: 'Info.vue',
     data() {
         return {
+            isOldValid: true,
+            isNewValid: true,
             userInfo: [],
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: '',
             invoiceInfo: [],
             userAddress: [],
             invoiceAddress: [],
@@ -138,6 +171,33 @@ export default {
         }
     },
     methods:{
+        async changePassword() {
+            if(this.userInfo.password !== this.oldPassword){
+                this.isOldValid = false
+                this.addError('Old password is incorrect.');
+                return false
+            } else if(this.newPassword.length < 8  || this.newPassword !== this.confirmPassword){
+                this.isNewValid = false
+                this.addError('New password or confirmation is incorrect.');
+                return false
+            } else {
+                this.isOldValid = true
+                this.isNewValid = true
+            }
+            this.isLoading = true;
+            const userLogin = this.$store.getters.getLogin;
+            const response = await fetch('http://localhost:8082/user/' + userLogin + '/changePassword', {
+                method: 'PATCH',
+                body: this.newPassword,
+            }).catch(() => {
+                this.addError();
+            });
+            if(!response.ok) {
+                this.addError();
+            }
+            this.isLoading = false;
+            window.location.reload();
+        },
         async getUserInfo() {
             this.isLoading = true;
             const userLogin = this.$store.getters.getLogin;
@@ -171,9 +231,9 @@ export default {
             this.invoiceInfo = await response.json();
             this.invoiceAddress = this.invoiceInfo.addressDto;
         },
-        addError() {
-            this.error = 'Service is unavailable try again later.';
-            throw new Error('Service is unavailable try again later.');
+        addError(msg) {
+            this.error = msg;
+            throw new Error(msg);
         },
         handleError() {
             this.error = null;
@@ -183,4 +243,35 @@ export default {
 </script>
 
 <style scoped>
+</style>
+
+<style>
+    input:focus,
+    input:valid {
+    top: -20px;
+    left: 35%;
+    color: #ef3dff;
+    font-size: 15px;
+    }
+    .valid {
+        padding: 10px 0;
+        font-size: 16px;
+        color: #e9e9e9;
+        width: 185px;
+        margin-bottom: 20px;
+        border: none;
+        border-bottom: 1px solid #e9e9e9;
+        outline: none;
+        background: transparent;
+    }
+    .invalid {
+        color: #e9e9e9;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 30px;
+        border: none;
+        border-bottom: 1px solid #ff002b;
+        outline: none;
+        background: transparent;
+    }
 </style>
