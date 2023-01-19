@@ -101,7 +101,6 @@ export default {
         },
         isManager: state => {
             let roleList = state.roles;
-            console.log(roleList)
             if(roleList.includes('MANAGER')) {
                 return true
             }
