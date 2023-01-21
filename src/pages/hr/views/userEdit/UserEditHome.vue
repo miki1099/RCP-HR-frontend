@@ -7,13 +7,17 @@
     <div v-if="state == 'add-work-info'">
       <add-work-info :username="usernameVal"></add-work-info>
     </div>
+    <div v-if="state == 'add-invoice-info'">
+      <add-invoice-info :username="usernameVal" />
+    </div>
 </template>
 
 <script>
 import BaseButton from '../../../../components/atoms/BaseButton.vue';
+import AddInvoiceInfo from './AddInvoiceInfo.vue';
 import AddWorkInfo from './AddWorkInfo.vue';
 export default {
-  components: { BaseButton, AddWorkInfo },
+  components: { BaseButton, AddWorkInfo, AddInvoiceInfo },
   data() {
     return {
       state: null
