@@ -4,11 +4,17 @@
       <base-button @click="state = 'add-work-info'">add work info</base-button>
       <base-button @click="state = 'add-invoice-info'">add invoice info</base-button>
     </div>
+    <div class="buttons">
+      <base-button mode="type2" @click="state = 'disable-user'">disable user</base-button>
+    </div>
     <div v-if="state == 'add-work-info'">
       <add-work-info :username="usernameVal"></add-work-info>
     </div>
     <div v-if="state == 'add-invoice-info'">
       <add-invoice-info :username="usernameVal" />
+    </div>
+    <div v-if="state == 'disable-user'">
+      <disable-user :username="usernameVal" />
     </div>
 </template>
 
@@ -16,8 +22,9 @@
 import BaseButton from '../../../../components/atoms/BaseButton.vue';
 import AddInvoiceInfo from './AddInvoiceInfo.vue';
 import AddWorkInfo from './AddWorkInfo.vue';
+import DisableUser from './DisableUser.vue';
 export default {
-  components: { BaseButton, AddWorkInfo, AddInvoiceInfo },
+  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser },
   data() {
     return {
       state: null
