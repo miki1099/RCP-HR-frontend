@@ -1,23 +1,23 @@
 <template>
-    <div class="login-box" v-if="!isUploaded">
+    <div class="login-box" v-if="!isAdded">
         <base-dialog :show="!!error" title="Error" @close="handleError">
             {{ error }}
         </base-dialog>
-        <h2>Upload document</h2>
+        <h2>Add manager</h2>
         <base-spinner v-if="isLoading"></base-spinner>
-        <input type="file" @change="uploadFile" ref="file"/>
-        <br/>
-        <base-button mode="type3" @click="submitMethod()">upload</base-button>
+        <base-button @click="submitMethod()">Connect to manager</base-button>
+        <base-card v-for="manager in managers" :key="manager" @click="select(manager.username)" :class="{highlight: selected == manager.username}" class="pointer">Select {{ manager.firstName }} {{ manager.lastName }}</base-card>
     </div>
     <div v-else>
-        <h2>Document succesfully uploaded!</h2>
+        <h2>Manager added succesfully!</h2>
     </div>
 </template>
 
 <script>
 import BaseButton from '../../../../components/atoms/BaseButton.vue';
+import BaseCard from '../../../../components/UI/BaseCard.vue';
 export default {
-  components: { BaseButton },
+  components: { BaseButton, BaseCard },
   props: {
     username: {
       type: String,
@@ -26,29 +26,29 @@ export default {
   },
   data() {
     return {
-        document: null,
+        managers: [],
+        selected: null,
         isLoading: false,
-        isUploaded: false,
+        isAdded: false,
         error: null,
     };
   },
+  created() {
+      this.loadManagers()
+  },
   methods: {
-    uploadFile() {
-        this.document = this.$refs.file.files[0];
-      },
-    async submitMethod() {
-        this.isLoading = true
+    async loadManagers() {
+      this.isLoading = true
 
-
-        const formData = new FormData()
-        formData.append('file', this.document)
-        formData.append('username', this.username)
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
 
         const response = await fetch(
-            'http://localhost:8082/hr/user/uploadFile',
+            'http://localhost:8082/hr/user/getAllManagers',
             {
-            method: 'POST',
-            body: formData
+            method: 'GET',
+            headers: headers
             }
         ).catch(() => {
                 this.addError();
@@ -64,8 +64,42 @@ export default {
                 this.isLoading = false
             return;
         }
-        this.isUploaded = true
+        this.managers = await response.json();
         this.isLoading = false;
+    },
+    async submitMethod() {
+        this.isLoading = true
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+
+        const response = await fetch(
+            'http://localhost:8082/hr/user/addMangerForUser?username=' + this.username + '&managerUsername=' + this.selected,
+            {
+            method: 'POST',
+            headers: headers,
+            body: null
+            }
+        ).catch(() => {
+                this.addError();
+            })
+
+            const vm = this
+
+        if (!response.ok) {
+            response.text().then(function (text) {
+                console.log(text)
+                vm.error = text
+            })
+                this.isLoading = false
+            return;
+        }
+        this.isAdded = true
+        this.isLoading = false;
+    },
+    select(managerUsername) {
+      this.selected = managerUsername
     },
     addError() {
         this.error = 'Service is unavailable try again later.';
@@ -108,9 +142,6 @@ a {
   border-bottom: 1px solid #e9e9e9;
   outline: none;
   background: transparent;
-}
-.date {
-    top: -20px !important;
 }
 
 .login-box .worklog-box label {
@@ -159,11 +190,23 @@ button {
   border: none;
   background: none;
 }
+.login-box button:hover {
+  background: #03e9f4;
+  box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4;
+}
 
 #submit-worklog:hover {
   background: #ef3dff;
   border-radius: 5px;
   box-shadow: 0 0 5px #ef3dff, 0 0 25px #ef3dff, 0 0 50px #ef3dff;
+}
+
+.highlight {
+  color: greenyellow;
+}
+
+.pointer {
+  cursor: pointer
 }
 
 @media (max-width: 600px) {
