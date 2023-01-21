@@ -3,6 +3,7 @@
     <div class="buttons">
       <base-button @click="state = 'add-work-info'">add work info</base-button>
       <base-button @click="state = 'add-invoice-info'">add invoice info</base-button>
+      <base-button @click="state = 'add-document'">add document</base-button>
     </div>
     <div class="buttons">
       <base-button mode="type2" @click="state = 'disable-user'">disable user</base-button>
@@ -12,6 +13,9 @@
     </div>
     <div v-if="state == 'add-invoice-info'">
       <add-invoice-info :username="usernameVal" />
+    </div>
+    <div v-if="state == 'add-document'">
+      <upload-document :username="usernameVal" />
     </div>
     <div v-if="state == 'disable-user'">
       <disable-user :username="usernameVal" />
@@ -23,8 +27,9 @@ import BaseButton from '../../../../components/atoms/BaseButton.vue';
 import AddInvoiceInfo from './AddInvoiceInfo.vue';
 import AddWorkInfo from './AddWorkInfo.vue';
 import DisableUser from './DisableUser.vue';
+import UploadDocument from './UploadDocument.vue';
 export default {
-  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser },
+  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser, UploadDocument },
   data() {
     return {
       state: null

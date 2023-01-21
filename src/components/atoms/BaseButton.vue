@@ -42,10 +42,14 @@ button:hover {
   box-shadow: 0 0 5px #c40000, 0 0 25px #c40000, 0 0 50px #c40000;
 }
 
-.type2:hover {
+.type2:hover, .type3:hover {
   background: #00fb15;
   border-radius: 5px;
   box-shadow: 0 0 5px #00fb15, 0 0 25px #00fb15, 0 0 50px #00fb15;
+}
+
+.type3 {
+  color: #00eeff;
 }
 
 @media (max-width: 600px) {
