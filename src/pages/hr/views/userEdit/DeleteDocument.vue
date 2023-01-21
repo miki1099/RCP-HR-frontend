@@ -3,13 +3,13 @@
         <base-dialog :show="!!error" title="Error" @close="handleError">
             {{ error }}
         </base-dialog>
-        <h2>Add manager</h2>
+        <h2>Delete document</h2>
         <base-spinner v-if="isLoading"></base-spinner>
-        <base-button v-if="selected != null" @click="submitMethod()">Connect to manager</base-button>
-        <base-card v-for="manager in managers" :key="manager" @click="select(manager.username)" :class="{highlight: selected == manager.username}" class="pointer">Select {{ manager.firstName }} {{ manager.lastName }}</base-card>
+        <base-button v-if="selected != null" mode="type2" @click="submitMethod()">Delete document</base-button>
+        <base-card v-for="document in documents" :key="document" @click="select(document)" :class="{highlight: selected == document}" class="pointer">Select {{ document }}</base-card>
     </div>
     <div v-else>
-        <h2>Manager added succesfully!</h2>
+        <h2>Document deleted succesfully!</h2>
     </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-        managers: [],
+        documents: [],
         selected: null,
         isLoading: false,
         isAdded: false,
@@ -45,7 +45,7 @@ export default {
         headers.append('Accept', 'application/json');
 
         const response = await fetch(
-            'http://localhost:8082/hr/user/getAllManagers',
+            'http://localhost:8082/hr/user/getFile/' + this.username,
             {
             method: 'GET',
             headers: headers
@@ -64,7 +64,7 @@ export default {
                 this.isLoading = false
             return;
         }
-        this.managers = await response.json();
+        this.documents = await response.json();
         this.isLoading = false;
     },
     async submitMethod() {
@@ -75,9 +75,9 @@ export default {
         headers.append('Accept', 'application/json');
 
         const response = await fetch(
-            'http://localhost:8082/hr/user/addMangerForUser?username=' + this.username + '&managerUsername=' + this.selected,
+            'http://localhost:8082/hr/user/deleteFile/' + this.selected,
             {
-            method: 'POST',
+            method: 'DELETE',
             headers: headers,
             body: null
             }
