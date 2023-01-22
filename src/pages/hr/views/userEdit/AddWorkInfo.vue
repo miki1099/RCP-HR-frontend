@@ -1,10 +1,9 @@
 <template>
-    <h3>Add work info</h3>
     <div class="login-box" v-if="!isWorkInfoAdded">
         <base-dialog :show="!!error" title="Error" @close="handleError">
             {{ error }}
         </base-dialog>
-        <h2>Add employee</h2>
+        <h2>Add work info</h2>
         <form @submit.prevent="submitMethod()">
             <div class="worklog-box">
                 <input type="text" name="" required="" v-model="contractType" class="valid">

@@ -3,7 +3,7 @@
         <base-dialog :show="!!error" title="Error" @close="handleError">
             {{ error }}
         </base-dialog>
-        <h3>Add invoice info</h3>
+        <h2>Add invoice info</h2>
         <form @submit.prevent="submitMethod()">
             <div class="worklog-box">
                 <input type="text" name="" required="" v-model="accountNumber" class="valid">
