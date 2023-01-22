@@ -74,7 +74,7 @@
             </div>
             <base-spinner v-if="isLoading"></base-spinner>
             <button>
-                Create
+                {{ existUsername == null ? 'Create' : 'update' }}
             </button>
         </form>   
     </div>
