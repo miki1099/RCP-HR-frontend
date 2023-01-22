@@ -8,7 +8,7 @@
         <div v-if="!isLoading">
             <label>
                 <base-card mode="dark">
-                    <h2>Your information:</h2>
+                    <h2 v-if="otherUsername == null">Your information:</h2>
                         <table>
                             <tr>
                                 <th>Username: </th>
@@ -42,7 +42,7 @@
                                 <th>Hire day: </th>
                                 <th align="left">{{new Date(userInfo.hireDate).toLocaleDateString('en-GB') }}</th>
                             </tr>
-                            <tr>
+                            <tr v-if="otherUsername == null">
                                 <th>change password: </th>
                                 <th>
                                     <table>
@@ -146,6 +146,13 @@
 <script>
 export default {
     name: 'Info.vue',
+    props: {
+        otherUsername: {
+            type: String,
+            required: false,
+            default: null
+        },
+    },
     data() {
         return {
             isOldValid: true,
@@ -172,6 +179,9 @@ export default {
     },
     methods:{
         async changePassword() {
+            if(this.otherUsername != null) {
+                return;
+            }
             if(this.userInfo.password !== this.oldPassword){
                 this.isOldValid = false
                 this.addError('Old password is incorrect.');
@@ -200,7 +210,10 @@ export default {
         },
         async getUserInfo() {
             this.isLoading = true;
-            const userLogin = this.$store.getters.getLogin;
+            let userLogin = this.otherUsername
+            if(this.otherUsername == null) {
+                userLogin = this.$store.getters.getLogin;
+            }
 
             const response = await fetch('http://localhost:8082/user/' + userLogin, {
                 method: 'GET',
@@ -215,7 +228,10 @@ export default {
         },
         async getInvoiceInfo() {
             this.isLoading = true;
-            const userLogin = this.$store.getters.getLogin;
+            let userLogin = this.otherUsername
+            if(this.otherUsername == null) {
+                userLogin = this.$store.getters.getLogin;
+            }
 
             const response = await fetch('http://localhost:8082/user/' + userLogin + '/getInvoiceInfo', {
                 method: 'GET',
