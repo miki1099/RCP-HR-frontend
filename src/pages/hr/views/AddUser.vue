@@ -3,8 +3,8 @@
         <base-dialog :show="!!error" title="Error" @close="handleError">
             {{ error }}
         </base-dialog>
-        <h2>Add employee</h2>
-        <form @submit.prevent="submitMethod()">
+        <h2>{{existUsername == null ? 'Add' : 'Edit'}} employee</h2>
+        <form @submit.prevent="existUsername == null ? submitMethod() : updateUser()">
             <div class="worklog-box">
                 <input type="text" name="" required="" v-model="firstName" class="valid">
                 <label>First Name</label>
@@ -13,7 +13,7 @@
                 <input type="text" name="" required="" v-model="lastName" class="valid">
                 <label>Last Name</label>
             </div>
-            <div class="worklog-box">
+            <div class="worklog-box"  v-if="existUsername == null">
                 <input type="text" name="" required="" v-model="username" class="valid">
                 <label>Username</label>
             </div>
@@ -22,18 +22,18 @@
                 <label>Email</label>
             </div>
             <div class="worklog-box">
-                <input type="password" name="" required="" v-model="password" class="valid">
+                <input type="password" name="" :required="existUsername == null" v-model="password" class="valid">
                 <label>Password</label>
             </div>
             <div class="worklog-box">
-                <input type="password" name="" required="" v-model="password2" class="valid">
+                <input type="password" name="" :required="existUsername == null" v-model="password2" class="valid">
                 <label>Confirm Password</label>
             </div>
-            <div class="worklog-box">
+            <div class="worklog-box" v-if="existUsername == null">
                 <input type="date" name="" required="" v-model="birthDate" class="valid">
                 <label class="date">Birth date</label>
             </div>
-            <div class="worklog-box">
+            <div class="worklog-box" v-if="existUsername == null">
                 <input type="text" name="" required="" v-model="pesel" class="valid">
                 <label>Pesel</label>
             </div>
@@ -79,7 +79,7 @@
         </form>   
     </div>
     <div v-else>
-        <h2>Employee succesfully added!</h2>
+        <h2>Employee succesfully {{ existUsername == null ? 'added' : 'updated'}}!</h2>
         <router-link to="/hrHome">Home</router-link>
     </div>
 </template>
@@ -100,6 +100,7 @@ export default {
       country: '',
       city: '',
       street: '',
+      passwordBuf: null,
       homeNumber: null,
       postalCode: '',
       isManager: false,
@@ -109,9 +110,85 @@ export default {
       error: null,
     };
   },
+  props: {
+    existUsername: {
+      type: String,
+      required: false,
+      default: null
+    },
+  },
   created() {
+    if ( this.existUsername != null ) {
+      this.loadUserData()
+    }
   },
   methods: {
+    async loadUserData() {
+      this.isLoading = true;
+      if(this.password != this.password2) {
+        this.error = 'Passwords should match!'
+        this.isLoading = false;
+        return
+      }
+
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+
+      const response = await fetch(
+        'http://localhost:8082/user/' + this.existUsername,
+        {
+          method: 'GET',
+          headers: headers
+        }
+      ).catch(() => {
+            this.addError();
+        })
+
+        const vm = this
+
+      if (!response.ok) {
+        response.text().then(function (text) {
+            console.log(text)
+            vm.error = text
+        })
+            this.isLoading = false
+          return;
+      }
+
+      const jsonResponse = await response.json()
+
+      this.firstName = jsonResponse.firstName
+      this.lastName = jsonResponse.lastName
+      this.username = jsonResponse.username
+      this.email = jsonResponse.email
+      this.password = null
+      this.password2 = null
+      this.passwordBuf = jsonResponse.password
+      this.phone = jsonResponse.phone
+      this.pesel = jsonResponse.pesel
+      this.birthDate = jsonResponse.birthDate
+      const address = jsonResponse.address
+      this.country = address.country
+      this.city = address.city
+      this.street = address.street
+      this.homeNumber = address.homeNumber
+      this.postalCode = address.postalCode
+
+      this.isManager = false
+      this.isHr = false
+      
+      for(let role of jsonResponse.roles){
+        if(role.name === 'HR') {
+          this.isHr = true
+        } else if(role.name === 'MANAGER') {
+          this.isManager = true
+        }
+      }
+
+
+      this.isLoading = false;
+    },
     async submitMethod() {
       this.isLoading = true;
       if(this.password != this.password2) {
@@ -158,6 +235,77 @@ export default {
                 lastName: this.lastName,
                 password: this.password,
                 pesel: this.pesel,
+                phone: this.phone,
+                roles: roleList,
+                username: this.username
+            }),
+        }
+      ).catch(() => {
+            this.addError();
+        })
+
+        const vm = this
+
+      if (!response.ok) {
+        response.text().then(function (text) {
+            console.log(text)
+            vm.error = text
+        })
+            this.isLoading = false
+          return;
+      }
+      this.isUserAdded = true;
+      this.isLoading = false;
+    },
+    async updateUser() {
+      this.isLoading = true;
+
+      if(this.password == null || this.password == '') {
+        this.password = this.passwordBuf
+        this.password2 = this.passwordBuf
+      }
+
+      if(this.password != this.password2) {
+        this.error = 'Passwords should match!'
+        this.isLoading = false;
+        return
+      }
+
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+
+      let roleList = []
+
+      if(this.isHr) {
+        roleList.push({
+            name: 'HR'
+        })
+      }
+      if(this.isManager) {
+        roleList.push({
+            name: 'MANAGER'
+        })
+      }
+
+      const response = await fetch(
+        'http://localhost:8082/hr/user/updateUser',
+        {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({
+                address: {
+                    city: this.city,
+                    country: this.country,
+                    homeNumber: this.homeNumber,
+                    postalCode: this.postalCode,
+                    street: this.street
+                },
+                birthDate: this.birthDate,
+                email: this.email,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                password: this.password,
                 phone: this.phone,
                 roles: roleList,
                 username: this.username

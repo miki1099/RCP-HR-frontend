@@ -5,6 +5,7 @@
       <base-button @click="state = 'add-invoice-info'">add invoice info</base-button>
       <base-button @click="state = 'add-document'">add document</base-button>
       <base-button @click="state = 'add-manager'">connect to manager</base-button>
+      <base-button @click="state = 'edit-user'">edit user</base-button>
     </div>
     <br/>
     <div class="buttons">
@@ -25,6 +26,9 @@
       <div v-if="state == 'add-manager'">
         <add-manager :username="usernameVal" />
       </div>
+      <div v-if="state == 'edit-user'">
+        <add-user :existUsername="usernameVal" />
+      </div>
       <div v-if="state == 'disable-user'">
         <disable-user :username="usernameVal" />
       </div>
@@ -43,8 +47,9 @@ import UploadDocument from './UploadDocument.vue';
 import AddManager from './AddManager.vue'
 import BaseCard from '../../../../components/UI/BaseCard.vue';
 import DeleteDocument from './DeleteDocument.vue';
+import AddUser from '../AddUser.vue';
 export default {
-  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser, UploadDocument, AddManager, BaseCard, DeleteDocument },
+  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser, UploadDocument, AddManager, BaseCard, DeleteDocument, AddUser },
   data() {
     return {
       state: null
