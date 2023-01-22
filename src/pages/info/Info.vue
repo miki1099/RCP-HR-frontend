@@ -139,6 +139,33 @@
                     </table>
                 </base-card>
             </label>
+            <label v-if="workInfo.length > 0">
+                <h2>Invoice info:</h2>
+                <base-card mode="dark" v-for="work in workInfo" :key="work">
+                    <table>
+                        <tr>
+                            <th>ContractType: </th>
+                            <th align="left">{{work.contractType}}</th>
+                        </tr>
+                        <tr>
+                            <th>Daily working time: </th>
+                            <th align="left">{{work.dailyWorkingTime}} hours</th>
+                        </tr>
+                        <tr>
+                            <th>Hour rate: </th>
+                            <th align="left">{{work.hourlyRate}} PLN</th>
+                        </tr>
+                        <tr>
+                            <th>From: </th>
+                            <th align="left">{{new Date(work.from).toLocaleDateString("en-GB")}}</th>
+                        </tr>
+                        <tr>
+                            <th>To: </th>
+                            <th align="left">{{new Date(work.to).toLocaleDateString("en-GB")}}</th>
+                        </tr>
+                    </table>
+                </base-card>
+            </label>
         </div>
     </div>
 </template>
@@ -162,6 +189,7 @@ export default {
             newPassword: '',
             confirmPassword: '',
             invoiceInfo: [],
+            workInfo: [],
             userAddress: [],
             invoiceAddress: [],
             isLoading: false,
@@ -172,6 +200,7 @@ export default {
         try {
             this.getUserInfo();
             this.getInvoiceInfo();
+            this.getWorkInfo();
             this.isLoading =  false;
         } catch(exception) {
             this.error = exception.message;
@@ -246,6 +275,27 @@ export default {
             }
             this.invoiceInfo = await response.json();
             this.invoiceAddress = this.invoiceInfo.addressDto;
+        },
+        async getWorkInfo() {
+            this.isLoading = true;
+            let userLogin = this.otherUsername
+            if(this.otherUsername == null) {
+                userLogin = this.$store.getters.getLogin;
+            }
+
+            const response = await fetch('http://localhost:8082/workInfo/getAllForUser/' + userLogin, {
+                method: 'GET',
+            }).catch(() => {
+                this.addError();
+            });
+            if(!response.ok) {
+                if(response.status === 422) {
+                    return
+                }
+                this.addError();
+            }
+            this.workInfo = await response.json();
+            this.isLoading = false;
         },
         addError(msg) {
             this.error = msg;
