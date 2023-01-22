@@ -1,8 +1,4 @@
 - log work: table not suit after reduction the screen
-- getFileSForUser
-- widok invoice info w info
-- dodaj też endpoint dla usera do generowania i zaciągania faktury
-- a i jeszcze możesz stworzyć widok dla usera przepracowany rok i ile ma zalogowane czasu bo póki co jest tylko dany dzień
-- house number
-- nie rzucać exceptionem dla invoiceInfo
-- css dla user info
+- a i jeszcze możesz stworzyć widok dla usera przepracowany rok
+- css dla user info i wgl pewnie cssy
+- więcej kolumn dla worklogow u managera

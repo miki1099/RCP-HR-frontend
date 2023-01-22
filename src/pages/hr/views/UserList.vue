@@ -5,7 +5,7 @@
     <h2>Employee list</h2>
     <h3>Click on user to perform actions</h3>
     <base-spinner v-if="isLoading"></base-spinner>
-    <base-card class="pointer" mode="dark" v-for="user in userList" :key="user" @click="goToUser(user.username)"><div><p><label >username:</label> {{ user.username }}</p><p><label>First Name: </label>{{ user.firstName }}</p><p><label>Lest Name: </label>{{ user.lastName }}</p></div></base-card>
+    <base-card class="pointer" mode="dark" v-for="user in userList" :key="user" @click="goToUser(user.username)"><div><p><label >Username:</label> {{ user.username }}</p><p><label>First Name: </label>{{ user.firstName }}</p><p><label>Last Name: </label>{{ user.lastName }}</p></div></base-card>
 </template>
 
 

@@ -17,7 +17,7 @@
             <th>to</th>
             <th>approved status</th>
         </tr>
-        <tr v-for="buf in calendarEvents" :key="buf.from" :class="{notApproved: !buf.isApproved}">
+        <tr v-for="buf in calendarEvents" :key="buf.from" :class="{notApproved: !buf.approved}">
             <td>{{ buf.name }}</td>
             <td>{{ getDate(buf.from) }}</td>
             <td>{{ getDate(buf.to) }}</td>

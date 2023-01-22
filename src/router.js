@@ -13,6 +13,8 @@ import UserList from './pages/hr/views/UserList.vue'
 import UserEditHome from './pages/hr/views/userEdit/UserEditHome.vue'
 import ManagerMain from './pages/manager/ManagerMain.vue'
 import store from './main.js'
+import UnacceptedDaysOff from './pages/manager/views/UnacceptedDaysOff.vue'
+import ShowWorkLogs from './pages/manager/views/ShowWorkLogs.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +31,9 @@ const router = createRouter({
     { path: '/hrHome/addUser', component: AddUser, meta: { requiresHrRole: true } },
     { path: '/hrHome/users', component: UserList, meta: { requiresHrRole: true } },
     { path: '/hrHome/user/editHome', component: UserEditHome, meta: { requiresHrRole: true } , props: route => ({ username: route.query.username })},
-    { path: '/managerHome', component: ManagerMain, meta: { requiresManagerRole: true } },
+    { path: '/managerHome', component: ManagerMain, meta: { requiresManagerRole: true } , props: route => ({ username: route.query.username }) },
+    { path: '/managerHome/unacceptedDaysOff', component: UnacceptedDaysOff, meta: { requiresManagerRole: true }, props: route => ({ username: route.query.username,firstName: route.query.firstName, lastName: route.query.lastName }) },
+    { path: '/managerHome/showWorkLogs', component: ShowWorkLogs, meta: { requiresManagerRole: true }, props: route => ({ username: route.query.username,firstName: route.query.firstName, lastName: route.query.lastName }) },
     { path: '/:notFound(.*)', component: NotFound }
   ]
 })
