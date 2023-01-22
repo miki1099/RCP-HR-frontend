@@ -140,7 +140,7 @@
                 </base-card>
             </label>
             <label v-if="workInfo.length > 0">
-                <h2>Invoice info:</h2>
+                <h2>Work info:</h2>
                 <base-card mode="dark" v-for="work in workInfo" :key="work">
                     <table>
                         <tr>

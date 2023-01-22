@@ -6,6 +6,7 @@
       <base-button @click="state = 'add-document'">add document</base-button>
       <base-button @click="state = 'add-manager'">connect to manager</base-button>
       <base-button @click="state = 'edit-user'">edit user</base-button>
+      <base-button @click="state = 'edit-benefits'">add/remove benefits</base-button>
     </div>
     <br/>
     <div class="buttons">
@@ -33,6 +34,9 @@
       <div v-if="state == 'edit-user'">
         <add-user :existUsername="usernameVal" />
       </div>
+      <div v-if="state == 'edit-benefits'">
+        <add-benefits :username="usernameVal" />
+      </div>
       <div v-if="state == 'show-info'">
         <info :otherUsername="usernameVal" />
       </div>
@@ -56,8 +60,9 @@ import BaseCard from '../../../../components/UI/BaseCard.vue';
 import DeleteDocument from './DeleteDocument.vue';
 import Info from '../../../info/Info.vue';
 import AddUser from '../AddUser.vue';
+import AddBenefits from './addBenefits.vue';
 export default {
-  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser, UploadDocument, AddManager, BaseCard, DeleteDocument, AddUser, Info },
+  components: { BaseButton, AddWorkInfo, AddInvoiceInfo, DisableUser, UploadDocument, AddManager, BaseCard, DeleteDocument, AddUser, Info, AddBenefits },
   data() {
     return {
       state: null
@@ -77,6 +82,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
 }
 </style>
