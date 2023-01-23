@@ -9,7 +9,7 @@
             <p><label>From: </label>{{ new Date(daysOff.startDate).toLocaleDateString('en-GB')}}</p>
             <p><label>To: </label>{{ new Date(daysOff.endDate).toLocaleDateString('en-GB')}}</p>
             <p><label>Day Off Type:</label> {{ daysOff.type }}</p>
-            <p><base-button @click="addToAccept(daysOff.id)">ACCEPT DAYS OFF</base-button></p>
+            <p><base-button v-if="!!!daysOff.isClicked" @click="addToAccept(daysOff.id); daysOff.isClicked = true">ACCEPT DAYS OFF</base-button></p>
             <p></p>
         </div>
     </base-card>

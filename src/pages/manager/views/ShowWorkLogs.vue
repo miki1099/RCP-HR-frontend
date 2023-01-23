@@ -9,7 +9,7 @@
             <p><label>From: </label>{{ new Date(workLog.from).toLocaleDateString('en-GB')}} {{ new Date(workLog.from).toLocaleTimeString('en-GB', { hour: "2-digit", minute: "2-digit" })}}</p>
             <p><label>To: </label>{{ new Date(workLog.to).toLocaleDateString('en-GB')}} {{ new Date(workLog.to).toLocaleTimeString('en-GB', { hour: "2-digit", minute: "2-digit" })}}</p>
             <p><label>Comment:</label> {{ workLog.comment }}</p>
-            <p><base-button v-if="!workLog.isApproved" @click="addIdToList(workLog.id)">ACCEPT WORK TIME</base-button></p>
+            <p><base-button v-if="!workLog.isApproved" @click="addIdToList(workLog.id); workLog.isApproved = true;">ACCEPT WORK TIME</base-button></p>
         </div>
     </base-card>
     <div><base-button @click="acceptWorkLog">SAVE</base-button></div>
