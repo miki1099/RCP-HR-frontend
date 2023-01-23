@@ -14,7 +14,7 @@
         <base-card mode="dark">
             <h4>Benefits:</h4>
             <div v-for="benefit in benefits" :key="benefit">
-                <p>{{ benefit.details }} cost: {{ benefit.monthlyCost }}</p>
+                <p>{{ benefit.details }} cost: {{ benefit.monthlyCost }} PLN</p>
             </div>
         </base-card>
         <base-card mode="dark" v-if="invoiceInfoRecord != null">
